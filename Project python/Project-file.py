@@ -1,7 +1,7 @@
 #1. Understand folder structure. Perform operations on files in different folders & 2. Automate repeating tasks using Python “for” loops.
 import os
 print (os.getcwd())
-working_dir="c:/Users/Ambrus/Documents/CEU/Coding for economists/Project python/asia-industry"
+working_dir="c:/Users/Ambrus/Documents/CEU/Coding for Economists/Coding-for-Economists-project/Project python/asia-industry"
 os.chdir(working_dir)
 
 #I am only goin to use the raw data, so I can delete the files and the folder
@@ -47,6 +47,12 @@ data["YoY Change"]=data["Value"].pct_change(fill_method=None)*100
 data=data[data['Series'] != "CPI Price, % y-o-y, not seas. adj."]
 print(data["Series"].unique())
 
+data.to_csv('output.csv', mode="w") #Let's save the cleaned data set
+
+#Let's create a list of the 5 countries with the largest industrial production
+top5_ip=data[(data["Time"] == "2017") & (data["Series"] == "Industrial Production, billions of constant US$")].nlargest(5, "Value")[["Country","Value"]]
+print(top5_ip[0:2]) #From the output we now know that the two largers industrial producers are China and the USA
+
 #Let's create a graph for the YoY growth of China vs the USA interms of industrial production
 print(data.loc[(data["Country"] == "China") & (data["Series"] == "Industrial Production, billions of constant US$")]) #In this table we can see that there is data available for YoY from 1992 to 2017
 
@@ -67,3 +73,5 @@ plt.show()
 
 print("Value and YoY change of Industrial production of China (in billions, constant USD)")
 print(data.loc[(data["Country"] == "China") & (data["Series"] == "Industrial Production, billions of constant US$"), ["YoY Change","Value"] ].describe()) 
+
+print(data.loc[data["Country"] == "China"])
