@@ -14,9 +14,13 @@ os.chdir(working_dir)
 
 import pandas as pd #In order to work with data tables I am going to use the Pandas library
 
+#Opening the raw folder
 os.chdir("raw")
+print(os.listdir())
 data=pd.read_csv("worldbank-monthly-asia-2019_long.csv")
 print(data.head())
+
+
 data.drop(["Series Code", "Time Code"], axis=1, inplace=True) #I am dropping two variables that I am not going to need
 print(data.info())
 
@@ -37,6 +41,7 @@ data["Series"] = data["Series"].replace({
 #I dont want monthly and quarterly data, so I convert Time to string and keep only the rows where the string is shorter than 6
 data["Time"]=data["Time"].astype("string")
 data=data[data["Time"].str.len() < 6]
+data["Time"]=data["Time"].astype("int") #We can now change the data type to intiger
 # I am also going to remove the year 2018 beacuse it is not a full year (The README file states the dataset is only until 2018 June)
 data=data[data['Time'] != "2018"]
 
@@ -74,4 +79,4 @@ plt.grid()
 plt.show()
 
 print("Value and YoY change of Industrial production of China (in billions, constant USD)") #Let's make a summary statistic table of Chinas industrial production
-print(data.loc[(data["Country"] == "China") & (data["Series"] == "Industrial Production, billions of constant US$"), ["YoY Change","Value"] ].describe()) 
+print(data.loc[(data["Country"] == "China") & (data["Series"] == "Industrial Production, billions of constant US$"), ["YoY Change","Value"] ].describe())
