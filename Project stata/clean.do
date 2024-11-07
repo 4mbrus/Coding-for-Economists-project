@@ -48,3 +48,7 @@ rename rating2_ta rating2
 rename rating2_ta_reviewcount rating2_reviewcount
 label variable rating2 "User rating average (tripadvisor, out of 5)"
 rename starrating star_rating
+
+//saving cleaned data
+cd ../..
+save cleaned, replace
